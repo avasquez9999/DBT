@@ -1,0 +1,18 @@
+
+{{ config(materialized='table') }}
+with TRIPS as(
+select distinct START_STATIO_ID as station_id,
+start_station_name as station_name,
+START_LAT as station_lat,
+START_LNG as start_station_lng
+
+from {{ source('DEMO','BIKE') }}
+
+where RIDE_ID != 'ride_id'
+limit 10
+)
+
+select
+*
+from TRIPS
+
