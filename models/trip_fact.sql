@@ -1,24 +1,20 @@
-
-{{ config(materialized='table') }}
-
 WITH TRIPS as (
-    select
-        RIDE_ID,
-        -- Convert clean strings to actual dates
-        DATE(TO_TIMESTAMP(REPLACE(STARTED_AT, '"', ''))) AS TRIP_DATE,
-        START_STATIO_ID AS START_STATION_ID,
-        MEMBER_CSUAL AS MEMBER_CASUAL,
-        -- Calculate trip duration in seconds
-        TIMESTAMPDIFF(
-            SECOND, 
-            TO_TIMESTAMP(REPLACE(STARTED_AT, '"', '')), 
-            TO_TIMESTAMP(REPLACE(ENDED_AT, '"', ''))
-        ) AS TRIP_DURATION_SECONDS
 
-    -- Use source() here to match the YML file above
-    from {{ source('DEMO', 'BIKE') }}
+select
+RIDE_ID,
+RIDEABLE_TYPE,
+DATE(TO_TIMESTAMP(STARTED_AT)) AS TRIP_DATE,
+START_STATIO_ID AS START_STATION_ID,
+END_STATION_ID,
+MEMBER_CSUAL AS MEMBER_CASUAL,
+TIMESTAMPDIFF(SECOND,TO_TIMESTAMP(STARTED_AT),TO_TIMESTAMP(ENDED_AT)) AS TRIP_DURATION_SECONDS
 
-    where RIDE_ID != '"bikeid"' and RIDE_ID != 'bikeid'
+from {{ source('DEMO', 'BIKE') }}
+
+where RIDE_ID != 'ride_id'
+
 )
 
-select * from TRIPS
+select
+*
+from TRIPS
