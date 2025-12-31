@@ -1,5 +1,4 @@
 
-{{ config(materialized='table') }}
 with cte as (
     select
         TO_TIMESTAMP(STARTED_AT) as STARTED_TIMESTAMP,
@@ -12,7 +11,7 @@ with cte as (
         -- Call second macro (Note the comma is at the end of the previous line now)
         {{ SEASON_OF_YEAR('STARTED_AT') }} as station_of_year
 
-    from {{ source('DEMO', 'BIKE') }}
+    from {{ ref('stg_bike') }}
     where STARTED_AT != 'started_at'
 )
 

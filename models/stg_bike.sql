@@ -1,25 +1,19 @@
 WITH BIKE AS (
-
-select
-RIDE_ID,
-REPLACE(STARTED_AT,'"','') AS STARTED_AT,
-REPLACE(ENDED_AT,'"','') AS ENDED_AT,
-START_STATION_NAME,
-START_STATIO_ID,
-END_STATION_NAME,
-END_STATION_ID,
-START_LAT,
-START_LNG,
-END_LAT,
-END_LNG,
-MEMBER_CSUAL
-
-from {{ source('DEMO', 'BIKE') }}
-
-where RIDE_ID not in ('"bikeid"', '""bikeid""') 
-  and STARTED_AT not in ('"starttime"', 'starttime', '""starttime""')
+    SELECT
+        REPLACE(RIDE_ID, '"', '') AS RIDE_ID,
+        REPLACE(STARTED_AT, '"', '') AS STARTED_AT,
+        REPLACE(ENDED_AT, '"', '') AS ENDED_AT,
+        REPLACE(START_STATION_NAME, '"', '') AS START_STATION_NAME,
+        REPLACE(START_STATION_ID, '"', '') AS START_STATION_ID,
+        REPLACE(END_STATION_NAME, '"', '') AS END_STATION_NAME,
+        REPLACE(END_STATION_ID, '"', '') AS END_STATION_ID,
+        REPLACE(START_LAT, '"', '') AS START_LAT,
+        REPLACE(START_LNG, '"', '') AS START_LNG,
+        REPLACE(END_LAT, '"', '') AS END_LAT,
+        REPLACE(END_LNG, '"', '') AS END_LNG,
+        REPLACE(MEMBER_CASUAL, '"', '') AS MEMBER_CASUAL
+    FROM {{ source('DEMO', 'BIKE') }}
+    WHERE RIDE_ID NOT LIKE '%bikeid%'
 )
- 
-select
-*
-from BIKE
+
+SELECT * FROM BIKE
