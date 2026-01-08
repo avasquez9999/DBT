@@ -1,3 +1,4 @@
+{{ config(materialized='table') }}
 WITH BIKE AS (
     SELECT
         REPLACE(RIDE_ID, '"', '') AS RIDE_ID,
