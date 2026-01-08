@@ -1,3 +1,5 @@
+{{ config(materialized='table') }}
+
 WITH TRIPS as (
 
 select
